@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Admin Panel</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center my-4">Registration Data</h1>
+
+        <!-- Delete All Button -->
+        <form action="/delete_all" method="POST" onsubmit="return confirm('Are you sure you want to delete all entries?')" style="text-align: right; margin-bottom: 10px;">
+            <button type="submit" class="btn btn-danger">Delete All</button>
+        </form>
+
+        <!-- Table to Display Registrations -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Topic</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if registrations %}
+                    {% for registration in registrations %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ registration.name }}</td>
+                        <td>{{ registration.category }}</td>
+                        <td>{{ registration.topic }}</td>
+                        <td>{{ registration.email }}</td>
+                        <td>{{ registration.phone }}</td>
+                        <td>
+                            <!-- Delete Single Entry Button -->
+                            <form action="/delete/{{ registration.id }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this entry?')" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">No registrations found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

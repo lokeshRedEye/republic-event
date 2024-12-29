@@ -1,0 +1,137 @@
+.marquee{
+    height: 80px;
+    width: 100%;
+    background-color: #212522;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-description {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.event-description img {
+    float: left; /* Ensures the image is floated to the left */
+    margin-right: 15px; /* Adds spacing between the image and text */
+    margin-bottom: 10px; /* Adds spacing at the bottom of the image */
+    border-radius: 8px; /* Adds rounded corners to the image */
+    max-width: 40%; /* Ensures the image takes up at most 40% of the container width */
+}
+
+.event-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.event-details {
+    color: #555; /* A softer color for the text */
+}
+.cate{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #212522;
+    color: white;
+}
+.category {
+    height: auto; /* Dynamic height */
+    width: 330px; /* Default width */
+    background-color: #212522; /* Background color */
+    color: white;
+    text-align: center;
+    padding: 1rem; /* Add padding */
+    border-radius: 10px; /* Rounded corners */
+    box-sizing: border-box; /* Include padding in dimensions */
+    overflow: hidden; /* Ensure no content spills out */
+}
+
+.categories {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align categories to the top */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    gap: 2rem; /* Adjust gap between items */
+    margin: 1rem; /* Add spacing */
+}
+
+/* Image styling for responsiveness */
+/* Image styling for uniform size */
+.category img {
+    width: 100%; /* Full width of container */
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Crop images to fit the container without distortion */
+    border-radius: 8px; /* Match container's rounded corners */
+    margin-bottom: 1rem; /* Add space below the image */
+}
+
+
+/* Centering the button */
+.category a {
+    display: block;
+    margin: 0 auto; /* Center horizontally */
+    text-align: center;
+}
+
+.category button {
+    display: inline-block;
+    margin-top: 1rem; /* Add margin above */
+    padding: 0.5rem 1.5rem; /* Button padding */
+}
+
+/* Responsive design for smaller devices (phones) */
+@media (max-width: 576px) {
+    .category {
+        width: 100%; /* Full width for small devices */
+    }
+    .categories {
+        flex-direction: column; /* Stack items vertically */
+        gap: 1.5rem; /* Reduce gap */
+    }
+    .category img {
+        width: 90%; /* Add small margin */
+        margin: 0 auto; /* Center images */
+    }
+    .category button {
+        margin: 1rem auto; /* Center buttons */
+    }
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+    .category {
+        width: 80%; /* Reduce width for better layout */
+    }
+    .categories {
+        gap: 2rem; /* Maintain spacing */
+    }
+}
+
+/* Larger screens (optional adjustments) */
+@media (min-width: 1200px) {
+    .category {
+        width: 300px; /* Compact look */
+    }
+    .categories {
+        gap: 3rem; /* Add space between categories */
+    }
+}
+
+
+.register{
+
+    margin-left: 15%;
+    margin-top: 2rem;
+
+    border-radius: 3px;
+}
+.register input{
+    width: 80%;
+}
+

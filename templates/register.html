@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CònVò 2K25 Series</a>
+        </div>
+    </nav>
+
+    <h1 class="display-4 text-center">Registration</h1>
+
+    <div class="container mt-5" id="formdetails">
+        <form id="registrationForm" action="{{ url_for('register') }}" method="POST">
+
+            <!-- Name Input -->
+            <div class="mb-3">
+                <label for="participantName" class="form-label">Name of the Participant</label>
+                <input type="text" class="form-control" id="participantName" name="participantName"
+                    placeholder="Enter Name" aria-label="Participant Name" required>
+            </div>
+
+            <!-- Category Dropdown -->
+            <div class="mb-3">
+                <label for="categoryDropdown" class="form-label">Select Category</label>
+                <select class="form-select" id="categoryDropdown" name="categoryDropdown"
+                    aria-label="Category Selection" required>
+                    <option value="" selected>Select a category</option>
+                    <option value="1">School (V to VII)</option>
+                    <option value="2">School (VIII to X)</option>
+                    <option value="3">College (UG & PG)</option>
+                    <option value="4">Open (Public)</option>
+                </select>
+            </div>
+
+            <!-- Topic Input -->
+            <div class="mb-3">
+                <label for="topicInput" class="form-label">Topic</label>
+                <input type="text" class="form-control" id="topicInput" name="topicInput" placeholder="Topic"
+                    aria-label="Topic" readonly disabled>
+            </div>
+
+            <!-- Email Input -->
+            <div class="mb-3">
+                <label for="emailAddress" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="emailAddress" name="emailAddress"
+                    placeholder="name@example.com" aria-label="Email Address" required
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+            </div>
+
+            <!-- Phone Number Input -->
+            <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter number"
+                    aria-label="Phone Number" required pattern="[0-9]{10}">
+                <div class="form-text">Enter a 10-digit phone number without dashes.</div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="successMessage" class="alert alert-success mt-3 text-center" style="display: none;">
+        <h3>Registration Successful!</h3>
+        <p>Thank you for registering. We will get in touch with you soon.</p>
+    </div>
+
+    <div id="errorMessage" class="alert alert-danger mt-3 text-center" style="display: none;">
+        <h3>Registration Failed</h3>
+        <p>An error occurred. Please try again later.</p>
+    </div>
+
+    <div class="cate" style="margin-top: 10rem;">
+        <p>
+            <br>
+            📅 <strong>Date:</strong> End of (Preliminary round) send video or present offline before 15/01/2025<br>
+            📅 <strong>Date:</strong> On 26/01/2025 (Final round)<br>
+            🕒 <strong>Time:</strong> 6:15 PM to 8:15 PM<br>
+            📍 <strong>Venue:</strong> Citizen ground, Paktini street, Melvisharam
+        </p>
+    </div>
+    <p class="cate">
+        Don’t miss this chance to shine and celebrate the essence of Republic Day through your words. We look forward to
+        your enthusiastic participation!
+    </p>
+
+    <script>
+        // Predefined topics for each category
+        const topics = {
+            "1": "The Power of Positive Thinking: How a Shift in Mindset Can Change Your Life",
+            "2": "Unleashing Your Inner Strength: Building Resilience in the Face of Challenges",
+            "3": "Turning Your Dreams into Reality: Setting and Achieving Goals with a Positive Mindset",
+            "4": "The Importance of Self-Care: Taking Care of Your Physical, Emotional, and Mental Well-being"
+        };
+
+        const categoryDropdown = document.getElementById('categoryDropdown');
+        const topicInput = document.getElementById('topicInput');
+        const registrationForm = document.getElementById('registrationForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const formdetails = document.getElementById('formdetails');
+
+        // Event listener for category selection
+        categoryDropdown.addEventListener('change', function () {
+            const selectedValue = this.value;
+            if (topics[selectedValue]) {
+                topicInput.value = topics[selectedValue];
+                topicInput.removeAttribute('disabled');
+            } else {
+                topicInput.value = "";
+                topicInput.setAttribute('disabled', true);
+            }
+        });
+
+        // Event listener for form submission
+        registrationForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(registrationForm);
+
+            fetch('/submit-registration', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Registration Successful!') {
+                        formdetails.style.display = "none";
+                        successMessage.style.display = 'block';
+                        errorMessage.style.display = 'none';
+                        registrationForm.reset();
+                        topicInput.value = "";
+                        topicInput.setAttribute('disabled', true);
+                    } else if (data.error) {
+                        errorMessage.textContent = data.error; // Display specific server error
+                        successMessage.style.display = 'none';
+                        errorMessage.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during fetch:', error);
+                    successMessage.style.display = 'none';
+                    errorMessage.style.display = 'block';
+                });
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
