@@ -2,6 +2,38 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import smtplib
 
+import requests
+
+# Sheety API Endpoint
+SHEETY_ENDPOINT = "https://api.sheety.co/93f98d84f7d027c5d1a305fee19f6db7/conVo25/workouts"
+
+def save_to_google_sheets(name, category, topic, email, phone):
+    try:
+        # Prepare the data payload
+        data = {
+            "workout": {  # Replace 'workout' with the key Sheety expects (check your API docs)
+                "name": name,
+                "category": category,
+                "topic": topic,
+                "email": email,
+                "phone": phone
+            }
+        }
+
+        # POST request to Sheety API
+        response = requests.post(SHEETY_ENDPOINT, json=data)
+        print(response)
+
+        # Check if the data was successfully added
+        if response.status_code == 201:
+            print("Data added to Google Sheets successfully!")
+        else:
+            print("Failed to add data to Google Sheets:", response.text)
+
+    except Exception as e:
+        print(f"Error adding data to Google Sheets: {e}")
+
+
 app = Flask(__name__)
 
 # Configuration for SQLAlchemy
@@ -52,8 +84,8 @@ def sendEmail(name, category, topic, email, phone):
                f"Regards,\nConVo25 Team")
 
     # Send the email to you (receiver)
-    connection.sendmail(from_addr="lokesh1234student@gmail.com",
-                        to_addrs="huzaifa7.horizon@gmail.com",
+    connection.sendmail(from_addr="lokesh78531@gmail.com",
+                        to_addrs="lokeshcoder123@gmail.com",
                         msg=message)
 
     # Close the connection
@@ -108,6 +140,7 @@ def register():
         db.session.commit()
 
         sendEmail(name , category , topic , email , phone)
+        save_to_google_sheets(name, category, topic, email, phone)
 
         # Return success message
         return jsonify({'message': 'Registration Successful!'}), 200
